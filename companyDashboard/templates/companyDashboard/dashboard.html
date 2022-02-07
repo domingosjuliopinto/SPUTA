@@ -1,0 +1,47 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'companyDashboard/css/dashboard.css' %}">
+<h1>{{ ticker }}</h1>
+{% include 'companyDashboard/companyChart.html' with ticker=ticker %}
+<p>
+    {% for key, price in prices.items %}
+    {{ key }} - {{ price }}
+    {% endfor %}
+</p>
+<p>
+    prediction: {{ prediction }}
+</p>
+{% for tweet in tweetObj %}
+    <div>
+        <p>{{ tweet.created_at }}</p>
+        <p>{{ tweet.text }}</p>
+        <p>{{ tweet.urls }}</p>
+    </div>
+{% endfor %}
+{% for news in newsObj %}
+    <div>
+        {{ news.article }}
+        <div>
+            <img src="{{ news.articles.0.urlToImage }}" alt="...">
+            {{ news.articles.0.title }}
+            {{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}
+            {{ news.articles.0.description }}
+            <a href="{{ news.articles.0.url }}" target="_blank">Check Details</a>
+        </div>
+    </div>
+{% endfor %}
+
+<div>
+<h3>
+Performace graph
+</h3>
+<img src="{% static url1 %}" alt="image1" srcset="">
+</div>
+<div>
+<h3>
+Next 30 days prediction
+</h3>
+<img src="{% static url2 %}" alt="image2" srcset="">
+</div>
+{% comment %}
+{% include url %}
+{% endcomment %}
