@@ -42,12 +42,23 @@
     <div class="text-box">
         <h1>Stock Market Prediction Using Twitter Sentiments</h1>
         <p>Investing in Stock is now one of the most important thing in the world for people to increase their portfolios. Here we are to help you out in this process by helping you get relevant informations regarding stock market and give various analysis regarding various company stocks.</p>
+        <br>
     </div>
     <div class="add-ticker">
         <form action="dashboard" method="POST">
             {% csrf_token %}
             <div class="ticker">
-                <input class="ticker-input" name="ticker" type="text" placeholder="stock exchange:ticker symbol">
+                <h2 style="color: white;">Please select the Company Stock you want to check:</h2>
+                <div style="width: 30%; text-align: left;transform: translateX(35vw);">
+                <input type="radio" class="ticker-input" id="NASDAQ:MSFT" name="ticker" value="NASDAQ:MSFT" checked>
+                <label for="NASDAQ:MSFT" style="padding-right: 10vw;">Microsoft</label>
+                <input type="radio" class="ticker-input" id="NASDAQ:FB" name="ticker" value="NASDAQ:FB">
+                <label for="NASDAQ:FB">Meta (fka Facebook)</label><br>
+                <input type="radio" class="ticker-input" id="NASDAQ:GOOGL" name="ticker" value="NASDAQ:GOOGL">
+                <label for="NASDAQ:GOOGL" style="padding-right: 50px;">Google (Alphabet Inc)</label>
+                <input type="radio" class="ticker-input" id="NASDAQ:AAPL" name="ticker" value="NASDAQ:AAPL">
+                <label for="NASDAQ:AAPL">Apple</label><br><br>
+                </div>
                 <button class="ticker-input" type="submit">Predict</button>
             </div>
         </form>
