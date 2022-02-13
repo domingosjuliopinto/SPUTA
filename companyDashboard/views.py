@@ -10,7 +10,7 @@ import datetime
 predictions = [343.11, 351.89, 364.12, 377.83, 391.79, 405.21, 417.82, 429.87, 441.89, 454.52, 468.2, 483.09, 499.03, 515.61, 532.35, 548.83, 564.79, 580.13, 594.8, 608.84, 622.21, 634.89, 646.81, 657.93, 668.22, 677.69, 686.35, 694.25, 701.43, 707.95]
 # Create your views here.
 def dashboard(request):
-    listedCompany = ['NASDAQ:MSFT', 'NSE:GOOGL', 'NSE:FB', 'NASDAQ:APPL']
+    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL']
     if not request.user.is_anonymous:
         if request.method == 'POST':
             ticker = request.POST['ticker']

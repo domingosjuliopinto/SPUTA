@@ -61,7 +61,7 @@ nav-links{
 }
 
 .text-box h1{
-    font-size: 60px;
+    font-size: 4vw;
 }
 .text-box p{
     margin: 10px 0 40px;
@@ -157,6 +157,7 @@ p{
     text-align: center;
     position: relative;
     top: 250px;
+    color: #ffffff;
 }
 
 form {
@@ -169,24 +170,9 @@ form {
 .ticker-input {
     padding: 10px 10px;
     border-radius: 30px;
+    color: #ffffff;
 }
-input[class="ticker-input"] {
-    width: 30%;
-    text-decoration: none;
-    color: #fff;
-    border: 1px solid #fff;
-    font-size: 13px;
-    background: transparent;
-}
-input[class="ticker-input"]:hover {
-    border: 1px solid white;
-    background: white;
-    color: black;
-    transition: 1s;
-}
-input[class="ticker-input"]:focus {
-    outline: none;
-}
+
 button[class="ticker-input"] {
     width: 10%;
     text-decoration: none;
@@ -265,9 +251,11 @@ button[class="ticker-input"]:hover {
     align-items: center;
     font-size: 100px;
 }
-.slides > div:target {
+
+/* .slides > div:target {
 /*   transform: scale(0.8); */
-}
+/*} */
+
 .author-info {
     background: rgba(0, 0, 0, 0.75);
     color: white;
@@ -308,11 +296,4 @@ height: 100%;
 }
 .slider > a:focus {
     background: #000;
-}
-
-/* Don't need button navigation */
-@supports (scroll-snap-type) {
-    .slider > a {
-        display: none;
-    }
 }
