@@ -7,16 +7,19 @@ import datetime
 from newsapi import NewsApiClient
 import datetime
 
-predictions = [343.11, 351.89, 364.12, 377.83, 391.79, 405.21, 417.82, 429.87, 441.89, 454.52, 468.2, 483.09, 499.03, 515.61, 532.35, 548.83, 564.79, 580.13, 594.8, 608.84, 622.21, 634.89, 646.81, 657.93, 668.22, 677.69, 686.35, 694.25, 701.43, 707.95]
+predictions = {'msft':[311.31, 309.1, 305.0, 299.84, 294.31, 288.8, 283.41, 278.02, 272.49, 266.71, 260.74, 254.76, 249.04, 243.87, 239.51, 236.11, 233.75, 232.47, 232.21, 232.94, 234.58, 237.09, 240.39, 244.41, 249.08, 254.29, 259.91, 265.78, 271.71, 277.46],
+                'googl':[]}
 # Create your views here.
 def dashboard(request):
-    listedCompany = ['NASDAQ:MSFT', 'NSE:GOOGL', 'NSE:FB', 'NASDAQ:APPL']
+    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:APPL']
     if not request.user.is_anonymous:
         if request.method == 'POST':
             ticker = request.POST['ticker']
             if ticker.upper() in listedCompany:
-                url1 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/performance' + ticker.split(':')[1].upper() + '.png'
-                url2 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/nxt30days' + ticker.split(':')[1].upper() + '.png'
+                month = str(datetime.date.today()).split("-")[1]
+                url1 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/performance/' + ticker.split(':')[1].upper() + month + '.png'
+                url2 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/nxt30days/' + ticker.split(':')[1].upper() + month + '.png'
+                print(url1, url2)
                 getInfo = yfinance.Ticker(ticker.split(':')[1].upper())
                 prices = {
                     'open': getInfo.info['open'],
@@ -26,7 +29,9 @@ def dashboard(request):
                 }
                 tweetObj = tweet(ticker.split(':')[1].upper())
                 newsObj = news(ticker.split(':')[1].upper())
-                prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
+                # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
+                companyPrediction = predictions[ticker.split(':')[1].lower()]
+                prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
                 context = {
                     'ticker': ticker,
                     'url1': url1,
