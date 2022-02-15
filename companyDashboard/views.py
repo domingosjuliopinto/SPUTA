@@ -11,7 +11,11 @@ predictions = {'msft':[311.31, 309.1, 305.0, 299.84, 294.31, 288.8, 283.41, 278.
                 'googl':[]}
 # Create your views here.
 def dashboard(request):
+<<<<<<< HEAD
+    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL']
+=======
     listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:APPL']
+>>>>>>> 0f1b4ef5314f0d29d49f2806b1a0198f245aa751
     if not request.user.is_anonymous:
         if request.method == 'POST':
             ticker = request.POST['ticker']

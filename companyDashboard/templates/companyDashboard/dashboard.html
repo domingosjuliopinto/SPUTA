@@ -1,5 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'companyDashboard/css/dashboard.css' %}">
+<body>
 <h1>{{ ticker }}</h1>
 {% include 'companyDashboard/companyChart.html' with ticker=ticker %}
 <p>
@@ -11,7 +12,8 @@
     prediction: {{ prediction }}
 </p>
 {% for tweet in tweetObj %}
-    <div>
+    <div class ="tweets">
+        <h3>Tweets</h3>
         <p>{{ tweet.created_at }}</p>
         <p>{{ tweet.text }}</p>
         <p>{{ tweet.urls }}</p>
@@ -20,7 +22,7 @@
 {% for news in newsObj %}
     <div>
         {{ news.article }}
-        <div>
+        <div class="news">
             <img src="{{ news.articles.0.urlToImage }}" alt="...">
             {{ news.articles.0.title }}
             {{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}
@@ -30,18 +32,29 @@
     </div>
 {% endfor %}
 
-<div>
-<h3>
-Performace graph
-</h3>
-<img src="{% static url1 %}" alt="image1" srcset="">
+<div class ="container">
+    <div class = "box">
+        <div class="performance">
+            <h3>
+                Performace graph
+            </h3>
+            <img src="{% static url1 %}" alt="image1" srcset="">
+        </div>
+    </div>
+    <div class ="box">
+        <h3>
+            Next 30 days prediction
+        </h3>
+        <img src="{% static url2 %}" alt="image2" srcset="">
+    </div>
+    <div class = "box">
+        <h3>
+            Twitter Polarity
+        </h3>
+    </div>
 </div>
-<div>
-<h3>
-Next 30 days prediction
-</h3>
-<img src="{% static url2 %}" alt="image2" srcset="">
-</div>
+        
 {% comment %}
 {% include url %}
 {% endcomment %}
+</body>
