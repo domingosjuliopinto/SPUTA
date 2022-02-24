@@ -15,7 +15,7 @@ predictions = {'msft': [311.31, 309.1, 305.0, 299.84, 294.31, 288.8, 283.41, 278
                 'nflx': [395.48, 407.78, 405.94, 394.31, 377.83, 360.7, 345.99, 335.27, 328.59, 324.87, 322.66, 320.74, 318.38, 315.22, 311.24, 306.6, 301.54, 296.34, 291.25, 286.47, 282.09, 278.14, 274.59, 271.39, 268.46, 265.73, 263.15, 260.69, 258.34, 256.07]}
 # Create your views here.
 def dashboard(request):
-    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL']
+    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL','NASDAQ:NFLX','NASDAQ:AMZN']
     if not request.user.is_anonymous:
         if request.method == 'POST':
             ticker = request.POST['ticker']
