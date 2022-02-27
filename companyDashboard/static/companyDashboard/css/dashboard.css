@@ -2,11 +2,10 @@ body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background-color: #8F00FF;
+    background-color: #E7DBFF;
 }
 h1 { 
     text-align: center;
-    color: red;
 }
 
 h3{
@@ -40,4 +39,34 @@ h3{
     box-sizing: border-box;
     overflow: hidden;
     border-radius: 10px;
+}
+
+.prediction{
+    background-color: black;
+    text-align: center;
+    font-size: 1.5vw;
+    width: 20%;
+    transform: translateX(40vw);
+    color: white;
+    border-radius: 10px;
+}
+
+.news{
+    text-align: center;
+}
+
+.news img{
+    width: 50vw;
+    border-radius: 10px;
+}
+
+.news h3{
+    color: black;
+}
+
+.news p{
+    font-size: 1vw;
+    width: 50%;
+    text-align: left;
+    transform: translateX(25vw);
 }

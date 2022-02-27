@@ -3,14 +3,16 @@
 <body>
 <h1>{{ ticker }}</h1>
 {% include 'companyDashboard/companyChart.html' with ticker=ticker %}
-<p>
-    {% for key, price in prices.items %}
-    {{ key }} - {{ price }}
-    {% endfor %}
-</p>
-<p>
-    prediction: {{ prediction }}
-</p>
+<div class="prediction">
+    <p>
+        {% for key, price in prices.items %}
+        {{ key }} - {{ price }}<br>
+        {% endfor %}
+    </p>
+    <p>
+        prediction: {{ prediction }}
+    </p>
+</div>
 {% for tweet in tweetObj %}
     <div class ="tweets">
         <h3>Tweets</h3>
@@ -23,11 +25,11 @@
     <div>
         {{ news.article }}
         <div class="news">
-            <img src="{{ news.articles.0.urlToImage }}" alt="...">
-            {{ news.articles.0.title }}
-            {{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}
-            {{ news.articles.0.description }}
-            <a href="{{ news.articles.0.url }}" target="_blank">Check Details</a>
+            <img src="{{ news.articles.0.urlToImage }}" alt="..."><br>
+            <h3>{{ news.articles.0.title }}</h3>
+            <h5>{{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}</h5>
+            <p>{{ news.articles.0.description }}</p>
+            <a href="{{ news.articles.0.url }}" target="_blank">Check Details</a><br><br>
         </div>
     </div>
 {% endfor %}
