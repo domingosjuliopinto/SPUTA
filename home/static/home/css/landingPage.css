@@ -10,7 +10,7 @@ body{
 
 .header{
     min-height: 100vh;
-    width: 100;
+    width: 100vw;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url('../images/stock.jpg');
     background-position: center;
     background-size: cover;
@@ -66,7 +66,7 @@ nav-links{
 }
 
 .text-box h1{
-    font-size: 4vw;
+    font-size: 2vw;
 }
 .text-box p{
     margin: 10px 0 40px;
@@ -251,4 +251,23 @@ button[class="ticker-input"]:hover {
     width: 1200px;
     position: relative;
     float: left;
+}
+/*For bigger screens*/
+@media screen and (min-width: 538px) {
+    .text-box h1{
+        font-size: 4vw;
+    }
+    .text-box p{
+        margin: 10px 0 40px;
+        font-size: 14px;
+        color: #fff;
+    }
+
+    .header{
+        min-height: 100vh;
+        width: 98.8vw;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+    }
 }
