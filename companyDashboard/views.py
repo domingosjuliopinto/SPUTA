@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 from django.contrib import messages
 import yfinance 
@@ -6,6 +7,10 @@ from tweepy import OAuthHandler
 import datetime
 from newsapi import NewsApiClient
 import datetime
+import pandas as pd
+import re
+from textblob import TextBlob
+from matplotlib import pyplot as plt
 
 predictions = {'msft': [279.18, 254.3, 222.94, 194.37, 173.37, 160.54, 153.72, 150.23, 148.12, 146.3, 144.37, 142.35, 140.47, 139.02, 138.28, 138.44, 139.6, 141.77, 144.89, 148.85, 153.53, 158.79, 164.48, 170.49, 176.7, 183.0, 189.27, 195.43, 201.34, 206.9],
                 'googl': [2549.75, 2302.73, 2035.02, 1806.52, 1637.91, 1522.21, 1442.86, 1384.44, 1335.67, 1288.98, 1239.66, 1185.18, 1124.93, 1060.05, 993.13, 927.7, 867.35, 814.9, 771.8, 738.17, 713.09, 695.16, 682.85, 674.74, 669.63, 666.58, 664.87, 663.96, 663.49, 663.2],
@@ -33,6 +38,8 @@ def dashboard(request):
                 }
                 tweetObj = tweet(ticker.split(':')[1].upper())
                 newsObj = news(ticker.split(':')[1].upper())
+                url3 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/scatterplot/sentimentAnalysis.png"
+                url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
                 prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
@@ -40,6 +47,8 @@ def dashboard(request):
                     'ticker': ticker,
                     'url1': url1,
                     'url2': url2,
+                    'url3': url3,
+                    'url4': url4,
                     'prices':prices,
                     'tweetObj': tweetObj,
                     'newsObj': newsObj,
@@ -53,6 +62,27 @@ def dashboard(request):
         messages.error(request, 'You are not authenticated')
         return render(request, 'home/base.html')
     return render(request, 'companyDashboard/dashboard.html')
+
+def cleanTxt(text):
+    text = re.sub(r'@[A-Za-z0-9]', '', text)
+    text = re.sub(r'#', '', text)
+    text = re.sub(r'RT[\s]+', '', text)
+    text = re.sub(r'https?:\/\/\S+', '', text)
+    return text
+
+def getSubjectivity(text):
+    return TextBlob(text).sentiment.subjectivity
+
+def getPolarity(text):
+    return TextBlob(text).sentiment.polarity
+
+def getAnalysis(score):
+    if score < 0:
+        return "Negative"
+    elif score > 0:
+        return "Positive"
+    else:
+        return "Neutral"
 
 def tweet(query):
     # consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
@@ -68,6 +98,26 @@ def tweet(query):
         {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
         {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'}
     ]
+    df = pd.DataFrame([tweet['text'] for tweet in tweets], columns=["Tweets"])
+    df['Tweets'] = df['Tweets'].apply(cleanTxt)
+    df["Subjectivity"] = df["Tweets"].apply(getSubjectivity)
+    df["Polarity"] = df["Tweets"].apply(getPolarity)
+    df["Analysis"] = df["Polarity"].apply(getAnalysis)
+    print(df)
+    plt.figure(figsize=(8,6))
+    for i in range(0, df.shape[0]):
+        plt.scatter(df['Polarity'][i], df['Subjectivity'][i], color='Blue')
+    plt.title('Sentiment Analysis')
+    plt.xlabel('Polarity')
+    plt.ylabel('Subjectivity')
+    sentimentAnalysis1Loc = "companyDashboard/static/companyDashboard/images/" + query.lower() + "/scatterplot/sentimentAnalysis.png"
+    sentimentAnalysis2Loc = "companyDashboard/static/companyDashboard/images/" + query.lower() + "/barplot/sentimentAnalysis.png"    
+    plt.savefig(sentimentAnalysis1Loc)
+    plt.title("Sentiment Analysis")
+    plt.xlabel('Sentiment')
+    plt.ylabel('Counts')
+    df['Analysis'].value_counts().plot(kind="bar")
+    plt.savefig(sentimentAnalysis2Loc)
     return tweets
 
 def news(query):
