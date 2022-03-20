@@ -1,11 +1,63 @@
+*{
+    font-family: 'Poppins', sans-serif;
+}
 body{
     margin: 0;
     padding: 0;
     font-family: sans-serif;
     background-color: #E7DBFF;
+
+}
+
+.header{
+    min-height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+nav{
+    display: flex;
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+nav img{
+    width: 150px;
+}
+nav-links{
+    flex:1;
+    text-align: right;
+}
+.nav-links ul li{
+    list-style: none;
+    display:inline-block;
+    padding: 8px 12px;
+    position: relative;
+
+}
+.nav-links ul li a{
+    color: blueviolet;
+    text-decoration: none;
+    font-size: 13px;
+}
+.nav-links ul li::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #f44336;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+.nav-links ul li:hover::after{
+    width: 100%;
 }
 h1 { 
-    text-align: center;
+    font-size: 36px;
+    font-weight: 600;
+    text-align:center;
+
 }
 
 h3{
@@ -13,18 +65,20 @@ h3{
 }
 
 .tweets{
-    position: relative;
-    width: 500px;
-    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+    text-align:center;
+    padding-top: 100px;
     
 }
 
 
 .container{
-    position: relative;
-    width: 1400px;
-    height: 400px;
-    margin: 240px auto;
+    width: 90%;
+    margin: 50px auto;
 }
 
 .container .box{
@@ -38,6 +92,13 @@ h3{
     box-sizing: border-box;
     overflow: hidden;
     border-radius: 10px;
+}
+
+img{
+    width: 500px;
+    height: auto;
+    margin: 5px;
+    
 }
 
 .prediction{
@@ -68,4 +129,8 @@ h3{
     width: 50%;
     text-align: left;
     transform: translateX(25vw);
+}
+
+p{
+    font-family: sans-serif;
 }

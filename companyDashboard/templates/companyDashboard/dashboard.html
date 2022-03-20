@@ -1,6 +1,32 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'companyDashboard/css/dashboard.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'companyDashboard/css/dashboard.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
 <body>
+    <section class="header">
+        <nav>
+            <a href="/"><img src="{% static 'home/images/logo.png' %}"></a>
+            <div class="nav-links">
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a href="/"> Welcome {{ request.user }}</a></li>
+                    {% endif %}
+                    <li><a href="#Graphs">Graphs</a></li>
+                    <li><a href="#News">News</a></li>
+                    <li><a href="#Tweets">Tweets</a></li>
+                </ul>
+            </div>
+        </nav>
+    <
 <h1>{{ ticker }}</h1>
 {% include 'companyDashboard/companyChart.html' with ticker=ticker %}
 <div class="prediction">
@@ -13,57 +39,74 @@
         prediction: {{ prediction }}
     </p>
 </div>
-{% for tweet in tweetObj %}
+<section id="Tweets"class="tweets">
+    {% for tweet in tweetObj %}
     <div class ="tweets">
-        <h3>Tweets</h3>
+        <h1>Tweets</h1>
         <p>{{ tweet.created_at }}</p>
         <p>{{ tweet.text }}</p>
         <p>{{ tweet.urls }}</p>
     </div>
+</section>
+
 {% endfor %}
+<section id="News"class="news">
 {% for news in newsObj %}
-    <div>
         {{ news.article }}
         <div class="news">
+            <h1>News</h1>
             <img src="{{ news.articles.0.urlToImage }}" alt="..."><br>
             <h3>{{ news.articles.0.title }}</h3>
             <h5>{{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}</h5>
             <p>{{ news.articles.0.description }}</p>
             <a href="{{ news.articles.0.url }}" target="_blank">Check Details</a><br><br>
         </div>
-    </div>
+</section>
 {% endfor %}
 
-<div class ="container">
-    <div class = "box">
-        <div class="performance">
-            <h3>
-                Performace graph
-            </h3>
-            <img src="{% static url1 %}" alt="image1" srcset="">
+
+<section id="Graphs"class="graphs">
+    <div class ="container">
+        <h1>Graphs</h1> 
+        <div class="row">
+            <div class = "box">
+                <div class="performance">
+                    <h3>
+                        Performace graph
+                    </h3>
+                    <img src="{% static url1 %}" alt="image1" srcset="">
+                </div>
+            </div>
+            <div class ="box">
+                <div class="predictions">
+                    <h3>
+                        Next 30 days prediction
+                    </h3>
+                    <img src="{% static url2 %}" alt="image2" srcset="">
+                </div>
+            </div>
+            <div class = "box">
+                <div class="polarity">
+                    <h3>
+                        Twitter Polarity
+                    </h3>
+                    <img src="{% static url3 %}" alt="image2" srcset="">
+                </div>
+            </div>
+            <div class = "box">
+                <div class="polaritys">
+                    <h3>
+                        Twitter Polarity
+                    </h3>
+                    <img src="{% static url4 %}" alt="image2" srcset="">
+                </div>
+            </div>
         </div>
     </div>
-    <div class ="box">
-        <h3>
-            Next 30 days prediction
-        </h3>
-        <img src="{% static url2 %}" alt="image2" srcset="">
-    </div>
-    <div class = "box">
-        <h3>
-            Twitter Polarity
-        </h3>
-        <img src="{% static url3 %}" alt="image2" srcset="">
-    </div>
-    <div class = "box">
-        <h3>
-            Twitter Polarity
-        </h3>
-        <img src="{% static url4 %}" alt="image2" srcset="">
-    </div>
-</div>
+</section>
         
 {% comment %}
 {% include url %}
 {% endcomment %}
 </body>
+</html>
