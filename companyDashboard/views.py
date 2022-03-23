@@ -8,6 +8,7 @@ import datetime
 from newsapi import NewsApiClient
 import datetime
 import pandas as pd
+import numpy as np
 import re
 from textblob import TextBlob
 from matplotlib import pyplot as plt
@@ -28,7 +29,7 @@ def dashboard(request):
                 month = str(datetime.date.today()).split("-")[1]
                 url1 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/performance/' + ticker.split(':')[1].upper() + month + '.png'
                 url2 = 'companyDashboard/images/' + ticker.split(':')[1].lower() + '/nxt30days/' + ticker.split(':')[1].upper() + month + '.png'
-                print(url1, url2)
+                # print(url1, url2)
                 getInfo = yfinance.Ticker(ticker.split(':')[1].upper())
                 prices = {
                     'open': getInfo.info['open'],
@@ -43,6 +44,17 @@ def dashboard(request):
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
                 prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
+                # print(posNegCnt)
+                lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
+                # print(lastDayPrice)
+                diff = "increase" if (prediction - lastDayPrice) > 0 else "decrease"
+                posCnt = "more" if posNegCnt["Positive"] > posNegCnt["Negative"] else "less"
+                if diff == "decrease" and posCnt == "less":
+                    declaration = f"As per the model, there is a {diff} in closing price and there are {posCnt} positive tweets, model says that there is a downward trend."
+                elif diff == "increase" and posCnt == "more":
+                    declaration = f"As per the model, there is an {diff} in closing price and there are {posCnt} positive tweets, model says that there is an upward trend."
+                else:
+                    declaration = f"As per the model, there is an {diff} in closing price but there are {posCnt} positive tweets, model says that the trend is stagnant."
                 context = {
                     'ticker': ticker,
                     'url1': url1,
@@ -52,11 +64,12 @@ def dashboard(request):
                     'prices':prices,
                     'tweetObj': tweetObj,
                     'newsObj': newsObj,
-                    'prediction': prediction
+                    'prediction': prediction,
+                    'declaration': declaration
                 }
                 return render(request, 'companyDashboard/dashboard.html', context)
         else:
-            print("Kya re")
+            # print("Kya re")
             pass
     else:
         messages.error(request, 'You are not authenticated')
@@ -93,17 +106,26 @@ def tweet(query):
     # auth.set_access_token(access_token, access_token_secret)
     # api = tw.API(auth)
 
-    # tweets = api.search_tweets(q = query, count = 2, lang='en')
+    # tweetsObj = api.search_tweets(q = query, count = 20, lang='en')
+    # tweets = [tweet._json for tweet in tweetsObj]
     tweets = [
         {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
-        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'}
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'},
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Wow! Im so happy'},
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Damn! I just hate you!!'}
     ]
-    df = pd.DataFrame([tweet['text'] for tweet in tweets], columns=["Tweets"])
+    df = pd.DataFrame([t['text'] for t in tweets], columns=["Tweets"])
     df['Tweets'] = df['Tweets'].apply(cleanTxt)
     df["Subjectivity"] = df["Tweets"].apply(getSubjectivity)
     df["Polarity"] = df["Tweets"].apply(getPolarity)
     df["Analysis"] = df["Polarity"].apply(getAnalysis)
-    print(df)
+    global posNegCnt
+    posNegCnt = df["Analysis"].value_counts()
+    if "Positive" not in posNegCnt:
+        posNegCnt["Positive"] = 0
+    if "Negative" not in posNegCnt:
+        posNegCnt["Negative"] = 0
+    print(posNegCnt)
     plt.figure(figsize=(8,6))
     for i in range(0, df.shape[0]):
         plt.scatter(df['Polarity'][i], df['Subjectivity'][i], color='Blue')
