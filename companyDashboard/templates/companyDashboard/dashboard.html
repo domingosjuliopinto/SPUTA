@@ -40,9 +40,9 @@
     </p>
 </div>
 <section id="Tweets"class="tweets">
+    <h1>Tweets</h1>
     {% for tweet in tweetObj %}
     <div class ="tweets">
-        <h1>Tweets</h1>
         <p>{{ tweet.created_at }}</p>
         <p>{{ tweet.text }}</p>
         <p>{{ tweet.urls }}</p>
@@ -51,10 +51,10 @@
 
 {% endfor %}
 <section id="News"class="news">
+<h1>News</h1>
 {% for news in newsObj %}
         {{ news.article }}
         <div class="news">
-            <h1>News</h1>
             <img src="{{ news.articles.0.urlToImage }}" alt="..."><br>
             <h3>{{ news.articles.0.title }}</h3>
             <h5>{{ news.articles.0.publishedAt }} - {{ news.articles.0.author }}</h5>
@@ -104,9 +104,10 @@
         </div>
     </div>
 </section>
-<section class="declaration">
-    <div style="text-align: center;">
-        <h3 style="background-color: blueviolet;"><strong>Checkout What Model Says...</strong></h3>
+
+<section id="Declaration" class="declaration">
+    <div>
+        <h3><strong>Checkout What Model Says...</strong></h3>
         <strong>{{ declaration }}</strong>
     </div>
 </section>

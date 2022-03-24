@@ -43,7 +43,7 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
+                prediction = companyPrediction[24 - (int(str(datetime.date.today()).split("-")[2]) - 1)]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
                 # print(lastDayPrice)
