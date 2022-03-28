@@ -65,16 +65,9 @@ h3{
 }
 
 .tweets{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    margin: auto;
-    text-align:center;
-    padding-top: 100px;
-    
+   width: 100%;
+   text-align: center; 
 }
-
 
 .container{
     width: 90%;
@@ -92,6 +85,7 @@ h3{
     box-sizing: border-box;
     overflow: hidden;
     border-radius: 10px;
+    transform: translateX(10vw);
 }
 
 img{
@@ -133,4 +127,16 @@ img{
 
 p{
     font-family: sans-serif;
+}
+
+.declaration{
+    clear: left;
+    text-align: center;
+}
+
+.declaration h3{
+    background-color: #8F00FF;
+    border-radius: 20vw;
+    width: 50%;
+    transform: translateX(25vw);
 }
