@@ -1,3 +1,4 @@
+from audioop import rms
 import re
 from django.shortcuts import render
 from django.contrib import messages
@@ -13,12 +14,21 @@ import re
 from textblob import TextBlob
 from matplotlib import pyplot as plt
 
-predictions = {'msft': [276.05, 250.46, 218.15, 194.85, 184.05],
-                'googl': [2766.81, 2613.35, 2396.3, 2185.13, 2017.88],
-                'fb': [212.42, 207.31, 202.6, 198.47, 194.96],
-                'aapl': [153.21, 136.03, 122.87, 115.25, 111.79],
-                'amzn': [3167.77, 2973.0, 2839.76, 2758.27, 2705.03],
-                'nflx': [369.94, 358.01, 346.27, 335.1, 325.59]}
+predictions = {'msft': [256.4, 239.08, 217.65, 198.61, 183.93],
+                'googl': [2111.5, 1917.43, 1754.91, 1631.58, 1535.66],
+                'fb': [174.53, 173.46, 172.46, 171.55, 170.7],
+                'aapl': [140.54, 123.62, 108.05, 95.22, 84.91],
+                'amzn': [2684.32, 2559.47, 2444.67, 2340.24, 2239.31],
+                'nflx': [203.3, 208.37, 215.34, 222.06, 227.91]}
+
+rmse = {
+        'msft': 20.45,
+        'googl': 162.14,
+        'fb': 19.92,
+        'aapl': 10.27,
+        'amzn': 165.28,
+        'nflx': 23.17
+        }
 # Create your views here.
 def dashboard(request):
     listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL','NASDAQ:NFLX','NASDAQ:AMZN']
@@ -55,6 +65,7 @@ def dashboard(request):
                     declaration = f"As per the model, there is an {diff} in closing price and there are {posCnt} positive tweets, model says that there is an upward trend."
                 else:
                     declaration = f"As per the model, there is an {diff} in closing price but there are {posCnt} positive tweets, model says that the trend is stagnant."
+                sd = rmse[ticker.split(':')[1].lower()]
                 context = {
                     'ticker': ticker,
                     'url1': url1,
@@ -65,7 +76,8 @@ def dashboard(request):
                     'tweetObj': tweetObj,
                     'newsObj': newsObj,
                     'prediction': prediction,
-                    'declaration': declaration
+                    'declaration': declaration,
+                    'sd': sd
                 }
                 return render(request, 'companyDashboard/dashboard.html', context)
         else:
@@ -143,34 +155,42 @@ def tweet(query):
     return tweets
 
 def news(query):
-    # newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
-    # top_headlines = newsapi.get_top_headlines(q='microsoft',
-    #                                     sources='bbc-news,the-verge',
-    #                                     # category='business',
-    #                                     language='en',
-    #                                     # country='us'
-    #                                     )
-    # news = top_headlines
-    # print(news)
+    queryMaker = {
+        "MSFT": "microsoft",
+        "NFLX": "netflix",
+        "AAPL": "apple",
+        "FB": "facebook",
+        "GOOGL": "google",
+        "AMZN": "amazon"
+    }
+    newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
+    top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
+                                        # sources='bbc-news,the-verge',
+                                        # category='business',
+                                        language='en',
+                                        # country='us'
+                                        )
+    news = top_headlines
+    print(news, queryMaker[query])
 
-    news = [{'articles': [{'author': 'Verge Staff',
-                'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
-                'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
-                'publishedAt': '2021-10-02T15:00:00Z',
-                'source': {'id': 'the-verge', 'name': 'The Verge'},
-                'title': 'Windows 11 seems okay',
-                'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
-                'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
-            'status': 'ok',
-            'totalResults': 1},
-            {'articles': [{'author': 'Verge Staff',
-                'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
-                'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
-                'publishedAt': '2021-10-02T15:00:00Z',
-                'source': {'id': 'the-verge', 'name': 'The Verge'},
-                'title': 'Windows 11 seems okay',
-                'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
-                'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
-            'status': 'ok',
-            'totalResults': 1}]
-    return news
+    # news = [{'articles': [{'author': 'Verge Staff',
+    #             'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
+    #             'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
+    #             'publishedAt': '2021-10-02T15:00:00Z',
+    #             'source': {'id': 'the-verge', 'name': 'The Verge'},
+    #             'title': 'Windows 11 seems okay',
+    #             'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
+    #             'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
+    #         'status': 'ok',
+    #         'totalResults': 1},
+    #         {'articles': [{'author': 'Verge Staff',
+    #             'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
+    #             'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
+    #             'publishedAt': '2021-10-02T15:00:00Z',
+    #             'source': {'id': 'the-verge', 'name': 'The Verge'},
+    #             'title': 'Windows 11 seems okay',
+    #             'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
+    #             'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
+    #         'status': 'ok',
+    #         'totalResults': 1}]
+    return news['articles']
