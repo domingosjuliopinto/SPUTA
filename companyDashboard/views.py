@@ -163,15 +163,15 @@ def news(query):
         "GOOGL": "google",
         "AMZN": "amazon"
     }
-    newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
-    top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
-                                        # sources='bbc-news,the-verge',
-                                        # category='business',
-                                        language='en',
-                                        # country='us'
-                                        )
-    news = top_headlines
-    print(news, queryMaker[query])
+    # newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
+    # top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
+    #                                     # sources='bbc-news,the-verge',
+    #                                     # category='business',
+    #                                     language='en',
+    #                                     # country='us'
+    #                                     )
+    # news = top_headlines
+    # print(news, queryMaker[query])
 
     # news = [{'articles': [{'author': 'Verge Staff',
     #             'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
@@ -193,4 +193,5 @@ def news(query):
     #             'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
     #         'status': 'ok',
     #         'totalResults': 1}]
+    news = {'status': 'ok', 'totalResults': 1, 'articles': [{'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}]}
     return news['articles']
