@@ -14,12 +14,12 @@ import re
 from textblob import TextBlob
 from matplotlib import pyplot as plt
 
-predictions = {'msft': [256.4, 239.08, 217.65, 198.61, 183.93],
-                'googl': [2111.5, 1917.43, 1754.91, 1631.58, 1535.66],
-                'fb': [174.53, 173.46, 172.46, 171.55, 170.7],
-                'aapl': [140.54, 123.62, 108.05, 95.22, 84.91],
-                'amzn': [2684.32, 2559.47, 2444.67, 2340.24, 2239.31],
-                'nflx': [203.3, 208.37, 215.34, 222.06, 227.91]}
+predictions = {'msft': [256, 256.4, 239.08, 217.65, 198.61, 183.93, 239.08, 217.65, 198.61, 183.93],
+                'googl': [2111.5, 1917.43, 1754.91, 1631.58, 1535.66, 2111.5, 1917.43, 1754.91, 1631.58, 1535.66],
+                'fb': [174.53, 173.46, 172.46, 171.55, 170.7, 174.53, 173.46, 172.46, 171.55, 170.7],
+                'aapl': [140.54, 123.62, 108.05, 95.22, 84.91, 174.53, 173.46, 172.46, 171.55, 170.7],
+                'amzn': [2684.32, 2559.47, 2444.67, 2340.24, 2239.31, 174.53, 173.46, 172.46, 171.55, 170.7],
+                'nflx': [203.3, 208.37, 215.34, 222.06, 227.91, 174.53, 173.46, 172.46, 171.55, 170.7]}
 
 rmse = {
         'msft': 20.45,
@@ -53,7 +53,7 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                prediction = companyPrediction[24 - (int(str(datetime.date.today()).split("-")[2]) - 1)]
+                prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
                 # print(lastDayPrice)
