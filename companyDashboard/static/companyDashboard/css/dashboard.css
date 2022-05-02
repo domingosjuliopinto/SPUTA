@@ -140,3 +140,11 @@ p{
     width: 50%;
     transform: translateX(25vw);
 }
+
+p.hidden{
+    display: none;
+}
+
+button.round{
+    border-radius: 40%;
+}
