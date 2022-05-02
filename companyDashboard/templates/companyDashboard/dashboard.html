@@ -13,6 +13,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 
+<script>
+    function hideit() {
+        var x = document.getElementById("hide");
+        x.style.display= "none";
+    }
+    
+    function unhideit() {
+        var x = document.getElementById("hide");
+        x.style.display= "block";
+    }
+    </script>
+
 <body>
     <section class="header">
         <nav>
@@ -40,7 +52,8 @@
             <p>
                 prediction: {{ prediction }} ± {{ sd }}
             </p>
-            <p>
+            <button class="round" onmouseover="unhideit()" onmouseout="hideit()">Warning</button>
+            <p id="hide" class="hidden">
                 The prediction is entirely based on past 100 days closing price, however it does not take into
                 consideration sudden rises and falls in the company portfolio as stock market could be highly
                 unpredictable sometimes.
