@@ -14,12 +14,12 @@ import re
 from textblob import TextBlob
 from matplotlib import pyplot as plt
 
-predictions = {'msft': [256, 256.4, 239.08, 217.65, 198.61, 183.93, 239.08, 217.65, 198.61, 183.93],
-                'googl': [2111.5, 1917.43, 1754.91, 1631.58, 1535.66, 2111.5, 1917.43, 1754.91, 1631.58, 1535.66],
-                'fb': [174.53, 173.46, 172.46, 171.55, 170.7, 174.53, 173.46, 172.46, 171.55, 170.7],
-                'aapl': [140.54, 123.62, 108.05, 95.22, 84.91, 174.53, 173.46, 172.46, 171.55, 170.7],
-                'amzn': [2684.32, 2559.47, 2444.67, 2340.24, 2239.31, 174.53, 173.46, 172.46, 171.55, 170.7],
-                'nflx': [203.3, 208.37, 215.34, 222.06, 227.91, 174.53, 173.46, 172.46, 171.55, 170.7]}
+predictions = {'msft': [258.62, 236.78, 214.29, 195.66, 182.4],
+                'googl': [2088.56, 1884.71, 1718.84, 1596.58, 1503.79],
+                'fb': [200.22, 200.12, 199.73, 199.2, 198.62],
+                'aapl': [141.95, 125.0, 109.79, 97.39, 87.5],
+                'amzn': [2242.34, 2161.89, 2075.04, 1979.22, 1886.33],
+                'nflx': [204.28, 209.17, 214.78, 219.59, 223.28]}
 
 rmse = {
         'msft': 20.45,
@@ -53,7 +53,7 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                prediction = companyPrediction[int(str(datetime.date.today()).split("-")[2]) - 1]
+                prediction = companyPrediction[5 - int(str(datetime.date.today()).split("-")[2])]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
                 # print(lastDayPrice)
@@ -110,22 +110,22 @@ def getAnalysis(score):
         return "Neutral"
 
 def tweet(query):
-    # consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
-    # consumer_secret = 'lf29kiY3mXdW0FLgvnFIaT0F9vjsNgeM49DbMseBCppsHzwQtm'
-    # access_token = '1354062104139952130-goNdDKZ7Hn66cSXvO6jLaQce2mELAE'
-    # access_token_secret = '51uilEwpSGQcZnAM7AwuIpxkzHPU9AIa2Geppigjl5R1U'
-    # auth = tw.OAuthHandler(consumer_key, consumer_secret)
-    # auth.set_access_token(access_token, access_token_secret)
-    # api = tw.API(auth)
+    consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
+    consumer_secret = 'lf29kiY3mXdW0FLgvnFIaT0F9vjsNgeM49DbMseBCppsHzwQtm'
+    access_token = '1354062104139952130-goNdDKZ7Hn66cSXvO6jLaQce2mELAE'
+    access_token_secret = '51uilEwpSGQcZnAM7AwuIpxkzHPU9AIa2Geppigjl5R1U'
+    auth = tw.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tw.API(auth)
 
-    # tweetsObj = api.search_tweets(q = query, count = 20, lang='en')
-    # tweets = [tweet._json for tweet in tweetsObj]
-    tweets = [
-        {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
-        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'},
-        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Wow! Im so happy'},
-        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Damn! I just hate you!!'}
-    ]
+    tweetsObj = api.search_tweets(q = query, count = 20, lang='en')
+    tweets = [tweet._json for tweet in tweetsObj]
+    # tweets = [
+    #     {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
+    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'},
+    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Wow! Im so happy'},
+    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Damn! I just hate you!!'}
+    # ]
     df = pd.DataFrame([t['text'] for t in tweets], columns=["Tweets"])
     df['Tweets'] = df['Tweets'].apply(cleanTxt)
     df["Subjectivity"] = df["Tweets"].apply(getSubjectivity)
@@ -163,35 +163,16 @@ def news(query):
         "GOOGL": "google",
         "AMZN": "amazon"
     }
-    # newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
-    # top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
-    #                                     # sources='bbc-news,the-verge',
-    #                                     # category='business',
-    #                                     language='en',
-    #                                     # country='us'
-    #                                     )
-    # news = top_headlines
-    # print(news, queryMaker[query])
-
-    # news = [{'articles': [{'author': 'Verge Staff',
-    #             'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
-    #             'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
-    #             'publishedAt': '2021-10-02T15:00:00Z',
-    #             'source': {'id': 'the-verge', 'name': 'The Verge'},
-    #             'title': 'Windows 11 seems okay',
-    #             'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
-    #             'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
-    #         'status': 'ok',
-    #         'totalResults': 1},
-    #         {'articles': [{'author': 'Verge Staff',
-    #             'content': 'Come on in, the windows are fine\r\nIf you buy something from a Verge link, Vox Media may earn a commission. See our ethics statement.\r\nMicrosofts next version of Windows, Windows 11, is coming October… [+17914 chars]',
-    #             'description': 'Microsoft’s next version of Windows, Windows 11, is coming October 5th. Technically, a near-final version is already here, and we’ve spent considerable time with it on over a dozen different PCs.',
-    #             'publishedAt': '2021-10-02T15:00:00Z',
-    #             'source': {'id': 'the-verge', 'name': 'The Verge'},
-    #             'title': 'Windows 11 seems okay',
-    #             'url': 'https://www.theverge.com/22705148/windows-11-upgrade-beta-release-preview-impressions',
-    #             'urlToImage': 'https://cdn.vox-cdn.com/thumbor/p_u0ZlnLrGczT6gT7lTppXCub3M=/0x178:2560x1518/fit-in/1200x630/cdn.vox-cdn.com/uploads/chorus_asset/file/22894952/twarren__windows11_sharper.jpg'}],
-    #         'status': 'ok',
-    #         'totalResults': 1}]
-    news = {'status': 'ok', 'totalResults': 1, 'articles': [{'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}]}
+    newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
+    top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
+                                        # sources='bbc-news,the-verge',
+                                        # category='business',
+                                        language='en',
+                                        # country='us'
+                                        )
+    news = top_headlines
+    print(news, queryMaker[query])
     return news['articles']
+
+    # news = {'status': 'ok', 'totalResults': 1, 'articles': [{'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}]}
+    # return news['articles']

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,92 +12,106 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <section class="header">
-    <nav>
-          <a href="/"><img src="{% static 'home/images/logo.png' %}"></a>
-        <div class="nav-links">
-            <ul>
-                {% if user.is_authenticated %}
-                <li><a href="/"> Welcome {{ request.user }}</a></li>
-                {% endif %}
-                <li><a href="">Home</a></li>
-                <li><a href="#About">About</a></li>
-                <li><a href="#Tutorial">Tutorial</a></li>
-                {% if user.is_anonymous %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                {% else %}
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-                {% endif %}
-            </ul>
-        </div>
+        <nav>
+            <a href="/"><img src="{% static 'home/images/logo.png' %}"></a>
+            <div class="nav-links">
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li><a href="/"> Welcome {{ request.user }}</a></li>
+                    {% endif %}
+                    <li><a href="">Home</a></li>
+                    <li><a href="#About">About</a></li>
+                    <li><a href="#Tutorial">Tutorial</a></li>
+                    {% if user.is_anonymous %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    {% else %}
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
 
-    </nav>   
-    {% if messages %}
-    <ul class="messages" style="text-align: center;position: relative;bottom: 162px;">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}    
-    </ul>
-    {% endif %}
-    <div class="text-box">
-        <h1>Stock Market Prediction Using Twitter Sentiments</h1>
-        <p>Investing in Stock is now one of the most important thing in the world for people to increase their portfolios. Here we are to help you out in this process by helping you get relevant informations regarding stock market and give various analysis regarding various company stocks.</p>
-        <br>
-    </div>
-    <div class="add-ticker">
-        <form action="dashboard" method="POST">
-            {% csrf_token %}
-            <div class="ticker">
-                <h2 style="color: white;">Please select the Company Stock you want to check:</h2>
-                <div style="width: 30%; text-align: left;transform: translateX(35vw);">
-                <input type="radio" class="ticker-input" id="NASDAQ:MSFT" name="ticker" value="NASDAQ:MSFT" checked>
-                <label for="NASDAQ:MSFT" style="padding-right: 10vw;">Microsoft</label>
-                <input type="radio" class="ticker-input" id="NASDAQ:FB" name="ticker" value="NASDAQ:FB">
-                <label for="NASDAQ:FB">Meta (fka Facebook)</label><br>
-                <input type="radio" class="ticker-input" id="NASDAQ:GOOGL" name="ticker" value="NASDAQ:GOOGL">
-                <label for="NASDAQ:GOOGL" style="padding-right: 50px;">Google (Alphabet Inc)</label>
-                <input type="radio" class="ticker-input" id="NASDAQ:AAPL" name="ticker" value="NASDAQ:AAPL">
-                <label for="NASDAQ:AAPL">Apple</label><br>
-                <input type="radio" class="ticker-input" id="NASDAQ:NFLX" name="ticker" value="NASDAQ:NFLX">
-                <label for="NASDAQ:NFLX" style="padding-right: 11.7vw;">Netflix</label>
-                <input type="radio" class="ticker-input" id="NASDAQ:AMZN" name="ticker" value="NASDAQ:AMZN">
-                <label for="NASDAQ:AMZN">Amazon</label><br><br>
+        </nav>
+        {% if messages %}
+        <ul class="messages" style="text-align: center;position: relative;bottom: 162px;">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="text-box">
+            <h1>Stock Market Prediction Using Twitter Sentiments</h1>
+            <p>Investing in Stock is now one of the most important thing in the world for people to increase their
+                portfolios. Here we are to help you out in this process by helping you get relevant informations
+                regarding stock market and give various analysis regarding various company stocks.</p>
+            <br>
+        </div>
+        <div class="add-ticker">
+            <form action="dashboard" method="POST">
+                {% csrf_token %}
+                <div class="ticker">
+                    <h2 style="color: white;">Please select the Company Stock you want to check:</h2>
+                    <div style="width: 30%; text-align: left;transform: translateX(35vw);">
+                        <input type="radio" class="ticker-input" id="NASDAQ:MSFT" name="ticker" value="NASDAQ:MSFT"
+                            checked>
+                        <label for="NASDAQ:MSFT" style="padding-right: 10vw;">Microsoft</label>
+                        <input type="radio" class="ticker-input" id="NASDAQ:FB" name="ticker" value="NASDAQ:FB">
+                        <label for="NASDAQ:FB">Meta (fka Facebook)</label><br>
+                        <input type="radio" class="ticker-input" id="NASDAQ:GOOGL" name="ticker" value="NASDAQ:GOOGL">
+                        <label for="NASDAQ:GOOGL" style="padding-right: 50px;">Google (Alphabet Inc)</label>
+                        <input type="radio" class="ticker-input" id="NASDAQ:AAPL" name="ticker" value="NASDAQ:AAPL">
+                        <label for="NASDAQ:AAPL">Apple</label><br>
+                        <input type="radio" class="ticker-input" id="NASDAQ:NFLX" name="ticker" value="NASDAQ:NFLX">
+                        <label for="NASDAQ:NFLX" style="padding-right: 11.7vw;">Netflix</label>
+                        <input type="radio" class="ticker-input" id="NASDAQ:AMZN" name="ticker" value="NASDAQ:AMZN">
+                        <label for="NASDAQ:AMZN">Amazon</label><br><br>
+                    </div>
+                    <button class="ticker-input" type="submit">Predict</button>
                 </div>
-                <button class="ticker-input" type="submit">Predict</button>
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
     </section>
-    <section id="Tutorial"class="tutorial">
-       <h1> Tutorial </h1>
-       <p> Want to know more about how to invest in stock market...</p>   
-       <div class="slider-frame">
-        <div class="slide-images">
-            <div class="img-container">
-                <img src="../../static/home/images/banner.jpg">
-            </div>
-            <div class="img-container">
-              <img src="../../static/home/images/banner.jpg">
-            </div>
-            <div class="img-container">
-              <img src="../../static/home/images/banner.jpg">
+    <section id="Tutorial" class="tutorial">
+        <h1> Tutorial </h1>
+        <p> Want to know more about how to invest in stock market...</p>
+        <div class="slider-frame">
+            <div class="slide-images">
+                {% for result in videosthumb %}
+                <div class="img-container">
+                    <!-- {{ result }} -->
+                    {% comment %}
+                    <!-- <img src="../../static/home/images/banner.jpg"> -->
+                    {% endcomment %}
+                    <a href="{{ result.0 }}"><img src="{{result.1 }}" alt="img"></a>
+                </div>
+                {% endfor %}
+                {% comment %}
+                <!-- <div class="img-container">
+                    <img src="../../static/home/images/banner.jpg">
+                </div>
+                <div class="img-container">
+                    <img src="../../static/home/images/banner.jpg">
+                </div> -->
+                {% endcomment %}
             </div>
         </div>
-      </div>
     </section>
 
     <section id="About" class="about">
-       <h1> About </h1>
-       <p> This website helps you to get the prediction of opening prices and the closing prices of a particular stock you are interested in.</p>
-    </section>   
+        <h1> About </h1>
+        <p> This website helps you to get the prediction of opening prices and the closing prices of a particular stock
+            you are interested in.</p>
+    </section>
 
     <section class="cta">
-       <h1> Want to know more about our website🤔🤔</h1>
-       <a href="" class="hero-btn">CONTACT US</a>
-    </section>   
-    
+        <h1> Want to know more about our website🤔🤔</h1>
+        <a href="" class="hero-btn">CONTACT US</a>
+    </section>
 
-    
+
+
 </body>
+
 </html>
