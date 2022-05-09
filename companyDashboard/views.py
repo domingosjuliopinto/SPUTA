@@ -110,22 +110,22 @@ def getAnalysis(score):
         return "Neutral"
 
 def tweet(query):
-    consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
-    consumer_secret = 'lf29kiY3mXdW0FLgvnFIaT0F9vjsNgeM49DbMseBCppsHzwQtm'
-    access_token = '1354062104139952130-goNdDKZ7Hn66cSXvO6jLaQce2mELAE'
-    access_token_secret = '51uilEwpSGQcZnAM7AwuIpxkzHPU9AIa2Geppigjl5R1U'
-    auth = tw.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tw.API(auth)
+    # consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
+    # consumer_secret = 'lf29kiY3mXdW0FLgvnFIaT0F9vjsNgeM49DbMseBCppsHzwQtm'
+    # access_token = '1354062104139952130-goNdDKZ7Hn66cSXvO6jLaQce2mELAE'
+    # access_token_secret = '51uilEwpSGQcZnAM7AwuIpxkzHPU9AIa2Geppigjl5R1U'
+    # auth = tw.OAuthHandler(consumer_key, consumer_secret)
+    # auth.set_access_token(access_token, access_token_secret)
+    # api = tw.API(auth)
 
-    tweetsObj = api.search_tweets(q = query, count = 20, lang='en')
-    tweets = [tweet._json for tweet in tweetsObj]
-    # tweets = [
-    #     {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
-    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'},
-    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Wow! Im so happy'},
-    #     {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Damn! I just hate you!!'}
-    # ]
+    # tweetsObj = api.search_tweets(q = query, count = 20, lang='en')
+    # tweets = [tweet._json for tweet in tweetsObj]
+    tweets = [
+        {'created_at': 'Oct. 3, 2021, 3:23 a.m.', 'text': 'RT @IamRenganathan: Life is short get your name in the hall of fame Google, Apple, Microsft, Netflix, Amazon, and Facebook.'},
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich So microsft flight sim is for kids? tell that to the pilots that use it to train.'},
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Wow! Im so happy'},
+        {'created_at': 'Oct. 2, 2021, 7:43 p.m.', 'text': '@TMessi_1 @Porkchop_EXP @Cernovich Damn! I just hate you!!'}
+    ]
     df = pd.DataFrame([t['text'] for t in tweets], columns=["Tweets"])
     df['Tweets'] = df['Tweets'].apply(cleanTxt)
     df["Subjectivity"] = df["Tweets"].apply(getSubjectivity)
@@ -163,16 +163,16 @@ def news(query):
         "GOOGL": "google",
         "AMZN": "amazon"
     }
-    newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
-    top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
-                                        # sources='bbc-news,the-verge',
-                                        # category='business',
-                                        language='en',
-                                        # country='us'
-                                        )
-    news = top_headlines
-    print(news, queryMaker[query])
-    return news['articles']
-
-    # news = {'status': 'ok', 'totalResults': 1, 'articles': [{'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}]}
+    # newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
+    # top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
+    #                                     # sources='bbc-news,the-verge',
+    #                                     # category='business',
+    #                                     language='en',
+    #                                     # country='us'
+    #                                     )
+    # news = top_headlines
+    # print(news, queryMaker[query])
     # return news['articles']
+
+    news = {'status': 'ok', 'totalResults': 1, 'articles': [{'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}, {'source': {'id': 'the-times-of-india', 'name': 'The Times of India'}, 'author': 'Ayushmann Chawla', 'title': 'WhatsApp may get Instagram-style quick reactions feature for status updates - Times of India', 'description': 'Facebook CEO Mark Zuckerberg recently announced new features for WhatsApp messaging platform such as message reactions, Communities and others. Now as', 'url': 'https://timesofindia.indiatimes.com/gadgets-news/whatsapp-may-get-instagram-style-quick-reactions-feature-for-status-updates/articleshow/91178789.cms', 'urlToImage': 'https://static.toiimg.com/thumb/msid-91178744,width-1070,height-580,imgsize-983013,resizemode-75,overlay-toi_sw,pt-32,y_pad-40/photo.jpg', 'publishedAt': '2022-04-29T10:36:00Z', 'content': None}]}
+    return news['articles']
