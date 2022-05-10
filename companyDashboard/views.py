@@ -110,10 +110,10 @@ def getAnalysis(score):
         return "Neutral"
 
 def tweet(query):
-    # consumer_key = 'p1c4TOG04CIlYFGSbjRdBQr98'
-    # consumer_secret = 'lf29kiY3mXdW0FLgvnFIaT0F9vjsNgeM49DbMseBCppsHzwQtm'
-    # access_token = '1354062104139952130-goNdDKZ7Hn66cSXvO6jLaQce2mELAE'
-    # access_token_secret = '51uilEwpSGQcZnAM7AwuIpxkzHPU9AIa2Geppigjl5R1U'
+    # consumer_key = ''
+    # consumer_secret = ''
+    # access_token = ''
+    # access_token_secret = ''
     # auth = tw.OAuthHandler(consumer_key, consumer_secret)
     # auth.set_access_token(access_token, access_token_secret)
     # api = tw.API(auth)
@@ -163,7 +163,7 @@ def news(query):
         "GOOGL": "google",
         "AMZN": "amazon"
     }
-    # newsapi = NewsApiClient(api_key='bc7e81851ccf4221b6edaf48941a9888')
+    # newsapi = NewsApiClient(api_key='')
     # top_headlines = newsapi.get_top_headlines(q=queryMaker[query],
     #                                     # sources='bbc-news,the-verge',
     #                                     # category='business',

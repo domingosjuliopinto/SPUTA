@@ -6,7 +6,7 @@ from django.contrib import messages
 
 # Create your views here.
 def home(request):
-    # api_key = "AIzaSyA3Fg-1Qaz3Ula4M2FTBOFoEMrcxCPB-rI"
+    # api_key = ""
     # youtube = build('youtube', 'v3', developerKey = api_key)
     # req = youtube.search().list(q="stocks market", part = 'snippet', type = "video")
     # res = req.execute()
