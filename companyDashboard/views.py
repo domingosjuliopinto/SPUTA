@@ -14,6 +14,7 @@ import re
 from textblob import TextBlob
 from matplotlib import pyplot as plt
 
+#the predictions have to be updated after every 5 days
 predictions = {'msft': [258.62, 236.78, 214.29, 195.66, 182.4],
                 'googl': [2088.56, 1884.71, 1718.84, 1596.58, 1503.79],
                 'fb': [200.22, 200.12, 199.73, 199.2, 198.62],
@@ -53,7 +54,8 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                prediction = companyPrediction[5 - int(str(datetime.date.today()).split("-")[2])]
+                #The number (i.e 10) in the below line has to be changed according to the date of last updation and will work for the next 5 days before out-of-range error occurs
+                prediction = companyPrediction[10 - int(str(datetime.date.today()).split("-")[2])]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
                 # print(lastDayPrice)
