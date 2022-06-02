@@ -54,8 +54,9 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                #The number (i.e 10) in the below line has to be changed according to the date of last updation and will work for the next 5 days before out-of-range error occurs
-                prediction = companyPrediction[10 - int(str(datetime.date.today()).split("-")[2])]
+                #The number (i.e 1) in the below line has to be changed according to the date of last updation and will work for the next 5 days before out-of-range error occurs
+                dateupdated = 1
+                prediction = companyPrediction[dateupdated - 1 - int(str(datetime.date.today()).split("-")[2])]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
                 # print(lastDayPrice)
