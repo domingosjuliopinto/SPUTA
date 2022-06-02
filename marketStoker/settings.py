@@ -119,7 +119,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "home/static",
+    BASE_DIR / "companyDashboard/static",
 ]
 
 # Default primary key field type
