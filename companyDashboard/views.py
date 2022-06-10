@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 #the predictions have to be updated after every 5 days
 predictions = {'msft': [258.62, 236.78, 214.29, 195.66, 182.4],
                 'googl': [2088.56, 1884.71, 1718.84, 1596.58, 1503.79],
-                'fb': [200.22, 200.12, 199.73, 199.2, 198.62],
+                'meta': [200.22, 200.12, 199.73, 199.2, 198.62],
                 'aapl': [141.95, 125.0, 109.79, 97.39, 87.5],
                 'amzn': [2242.34, 2161.89, 2075.04, 1979.22, 1886.33],
                 'nflx': [204.28, 209.17, 214.78, 219.59, 223.28]}
@@ -25,14 +25,14 @@ predictions = {'msft': [258.62, 236.78, 214.29, 195.66, 182.4],
 rmse = {
         'msft': 20.45,
         'googl': 162.14,
-        'fb': 19.92,
+        'meta': 19.92,
         'aapl': 10.27,
         'amzn': 165.28,
         'nflx': 23.17
         }
 # Create your views here.
 def dashboard(request):
-    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:FB', 'NASDAQ:AAPL','NASDAQ:NFLX','NASDAQ:AMZN']
+    listedCompany = ['NASDAQ:MSFT', 'NASDAQ:GOOGL', 'NASDAQ:META', 'NASDAQ:AAPL','NASDAQ:NFLX','NASDAQ:AMZN']
     if not request.user.is_anonymous:
         if request.method == 'POST':
             ticker = request.POST['ticker']
@@ -54,8 +54,8 @@ def dashboard(request):
                 url4 = "companyDashboard/images/" + ticker.split(':')[1].lower() + "/barplot/sentimentAnalysis.png"
                 # prediction = predictions[int(str(datetime.date.today()).split("-")[2]) - 1]
                 companyPrediction = predictions[ticker.split(':')[1].lower()]
-                #The number (i.e 1) in the below line has to be changed according to the date of last updation and will work for the next 5 days before out-of-range error occurs
-                dateupdated = 1
+                #The number (i.e 10) in the below line has to be changed according to the date of last updation and will work for the next 5 days before out-of-range error occurs
+                dateupdated = 10
                 prediction = companyPrediction[dateupdated - 1 - int(str(datetime.date.today()).split("-")[2])]
                 # print(posNegCnt)
                 lastDayPrice = yfinance.Ticker(ticker.split(':')[1].upper()).history(period="5d")["Close"].iloc[-1]
@@ -84,7 +84,6 @@ def dashboard(request):
                 }
                 return render(request, 'companyDashboard/dashboard.html', context)
         else:
-            # print("Kya re")
             pass
     else:
         messages.error(request, 'You are not authenticated')
@@ -162,7 +161,7 @@ def news(query):
         "MSFT": "microsoft",
         "NFLX": "netflix",
         "AAPL": "apple",
-        "FB": "facebook",
+        "META": "meta",
         "GOOGL": "google",
         "AMZN": "amazon"
     }
